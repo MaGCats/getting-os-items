@@ -29,7 +29,7 @@ def main():
     link_list = fetchAbout(driver, 'https://opensea.io/mag_387')
     print("取得可能なリンク数は" + str(len(link_list)) + "です")
 
-    dts = getDetails(driver, link_list, 3)
+    dts = getDetails(driver, link_list, 10000)
     
     # 書き出し
     arr = getDetailsArray(dts)
