@@ -1,14 +1,14 @@
 # Create by MaG(magcats.eth)
 # Create date : 2022/02/27
 
-from ast import For
+# TODO 例外処理実装
+
 from lib2to3.pytree import convert
 import about
 import detail
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-# from selenium.webdriver.common.action_chains import ActionChains
 
 from selenium.webdriver.chrome import service as ch
 
@@ -23,28 +23,13 @@ def main():
 
     chrome_service = ch.Service(executable_path = "./chromedriver")
     driver = webdriver.Chrome(service = chrome_service)
-    # driver = webdriver.Chrome('./chromedriver')
     driver.implicitly_wait(5)
 
     # 一覧ページでNFT一覧の情報を取得
-    # link_list = getAbout(driver, 'https://opensea.io/CATHATS?tab=created')
-    link_list = getAbout(driver, 'https://opensea.io/mag_387')
+    link_list = fetchAbout(driver, 'https://opensea.io/mag_387')
     print("取得可能なリンク数は" + str(len(link_list)) + "です")
 
-    # 一覧情報から１ページずつ詳細情報を取得
-    dts = []
-    count = 1
-    for li in link_list:
-        print("こちらのNFTの情報を取得します:" + li.detail_url)
-        dts.append(getDetail(driver, li.detail_url))
-        print("進捗:" + str(count) + "/" + str(len(link_list)))
-        print("")
-        count += 1
-    # dt = getDetail(driver, "https://opensea.io/assets/matic/0x2953399124f0cbb46d2cbacd8a89cf0599974963/79835183430910688128715790666421949028899909717611245081205903204785099636739")
-    # dt = getDetail(driver, \
-    #     "https://opensea.io/assets/matic/0x2953399124f0cbb46d2cbacd8a89cf0599974963/79835183430910688128715790666421949028899909717611245081205903172899262431242")
-
-    # printDetail(dts[0])
+    dts = getDetails(driver, link_list, 3)
     
     # 書き出し
     arr = getDetailsArray(dts)
@@ -83,8 +68,6 @@ def getDetailsArray(details):
 
 # csv書き込み
 def writeCsv(array):
-    # l = [[0, 1, 2], ['a\nb', 'x', 'y']]
-
     with open('./sample.csv', 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerows(array)
@@ -93,7 +76,8 @@ def writeCsv(array):
         print(f.read())
 
 # 一覧情報を取得
-def getAbout(driver, url):
+# TODO Aboutを別の用語に置き換える
+def fetchAbout(driver, url):
     driver.get(url)
     time.sleep(1)
 
@@ -122,8 +106,21 @@ def getAbout(driver, url):
     # return [s.get_attribute("href") for s in assets_el]
     return about_list
 
+# 詳細情報を上限付きで取得する
+def getDetails(driver, about_list = [], limit = 100000):
+    count = 1
+    detail_list = []
+    for about in about_list:
+        if count == limit:
+            break
+        count += 1
+        print("こちらのNFTの情報を取得します:" + about.detail_url)
+        detail_list.append(fetchDetail(driver, about.detail_url))
+        print("進捗:" + str(count) + "/" + str(len(about_list)))
+    return detail_list
+
 # 詳細情報を取得
-def getDetail(driver, url):
+def fetchDetail(driver, url):
     detail_data = detail.Detail()
 
     driver.get(url)
@@ -145,7 +142,7 @@ def getDetail(driver, url):
         # NFTの所有者名（１つの場合のみ）
         detail_data.owner_name = owner_itm[0].text
         # 所有者URL（１つの場合のみ）
-        detail_data.owner_name = owner_itm[0].get_attribute("href")
+        detail_data.owner_url = owner_itm[0].get_attribute("href")
 
     creator_name = driver.find_elements(by=By.XPATH, value='//div[contains(@id,"Body react-aria-")]/div/div/section/div/a/span')
     if len(creator_name) > 0:
@@ -180,28 +177,6 @@ def getDetail(driver, url):
         detail_data.data_url = driver.find_element(by=By.XPATH, value='//div[@class="Overlayreact__Overlay-sc-1yn7g51-0 ebMEfa"]/div/div/div/div/div/img').get_attribute("src")
 
     return detail_data
-
-def printDetail(dt):
-    # NFT名
-    print("NFT名:" + dt.name)
-    # 説明
-    print("説明:" + dt.description)
-    # 作成者名
-    print("作成者名:" + dt.creator_name)
-    # 作成者のURL ※ウォレットアドレスではない
-    print("作成者のURL:" + dt.creator_address)
-    # NFTの所有者名（１つの場合のみ）
-    print("NFTの所有者名（１つの場合のみ）:" + dt.owner_name)
-    # 所有者URL
-    print("所有者URL:" + dt.owner_url)
-    # NFTのコレクション名
-    print("NFTのコレクション名:" + dt.collection_name)
-    # コンテンツの中身のURL
-    print("コンテンツの中身のURL:" + dt.data_url)
-    # NFTのコントラクトアドレス
-    print("NFTのコントラクトアドレス:" + dt.contract_address)
-    # トークンID
-    print("トークンID:" + dt.token_id)
 
 if __name__ == "__main__":
     main()
