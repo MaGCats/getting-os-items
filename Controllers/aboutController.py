@@ -1,6 +1,7 @@
 import time
 import Models.about as about
 from Utilities.seleniumUtil import SeleniumUtil
+from selenium.webdriver.common.by import By
 
 class AboutController:
     def __init__(self, driver):
@@ -30,7 +31,13 @@ class AboutController:
         if (assets_el := SeleniumUtil.findElements(self.driver, '//div[contains(@class,"AssetsSearchView--assets")]/div/div/div/div/div/article/a', True)) != False:
             about_list = []
             for s in assets_el:
-                about_itm = about.About(detail_url = s.get_attribute("href"))
+                thumbnail = ""
+                if len(thumbnail_block := s.find_elements(by=By.XPATH, value='//div/div/div/div/img')) > 0:
+                    thumbnail = thumbnail_block[0].get_attribute("src")
+
+                about_itm = about.About(
+                    detail_url = s.get_attribute("href"),
+                    thumbnail_url = thumbnail)
                 about_list.append(about_itm)
             return about_list
         return False

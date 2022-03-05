@@ -3,6 +3,7 @@ from os import name
 
 class Detail:
     def __init__(self, 
+            blockchain_type ='',
             name = '',
             description = '',
             creator_name = '',
@@ -11,8 +12,12 @@ class Detail:
             owner_url = '',
             collection_name = '',
             data_url = '',
+            detail_url = '',
+            thumbnail = '',
             contract_address = '',
             token_id = ''):
+        # ブロックチェーン
+        self.blockchain_type = blockchain_type
         # NFT名
         self.name = name
         # 説明
@@ -29,6 +34,10 @@ class Detail:
         self.collection_name = collection_name
         # コンテンツの中身のURL
         self.data_url = data_url
+        # 詳細ページのURL
+        self.detail_url = detail_url
+        # NFTのサムネイルのURL
+        self.thumbnail = thumbnail
         # NFTのコントラクトアドレス
         self.contract_address = contract_address
         # トークンID
