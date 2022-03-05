@@ -4,16 +4,18 @@ from Utilities.seleniumUtil import SeleniumUtil
 from selenium.webdriver.common.by import By
 
 class AboutController:
-    def __init__(self, driver):
+    def __init__(self, driver, conf):
         self.driver = driver
+        self.conf = conf
         return
 
     # 一覧情報を取得
     # TODO Aboutを別の用語に置き換える
-    def fetchAbout(self, url):
+    def fetchAbout(self):
         print("一覧画面で基本情報を取得します")
+        url = self.conf.targetUrl
         self.driver.get(url)
-        time.sleep(1)
+        time.sleep(self.conf.aboutWaitTime)
 
         # 縮小ボタンを選択
         if (small_btn := SeleniumUtil.findElements(self.driver, '//button[contains(@class,"bnWGYU")]')) != False:

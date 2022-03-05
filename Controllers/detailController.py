@@ -9,23 +9,23 @@ class DetailController:
         return
 
         # 詳細情報を上限付きで取得する
-    def getDetails(self, about_list = [], limit = 100000):
+    def getDetails(self, conf, about_list = [], limit = 100000):
         count = 0
         detail_list = []
         for about in about_list:
             if count == limit:
                 break
             count += 1
-            detail_list.append(self.fetchDetail(about))
+            detail_list.append(self.fetchDetail(conf, about))
             print("進捗:" + str(count) + "/" + str(len(about_list)))
         return detail_list
 
     # 詳細情報を取得
-    def fetchDetail(self, about):
+    def fetchDetail(self, conf, about):
         url = about.detail_url
         detail_data = detail.Detail()
         self.driver.get(url)
-        time.sleep(1)
+        time.sleep(conf.detailWaitTime)
 
         # 表示倍率を縮小
         self.driver.execute_script("document.body.style.zoom='60%'")

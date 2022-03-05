@@ -3,23 +3,23 @@
 
 from selenium import webdriver
 from selenium.webdriver.chrome import service as ch
+from webdriver_manager.chrome import ChromeDriverManager
 
 from Controllers.aboutController import AboutController
-from Controllers.configController import ConfigController
+from Models.config import Config
 from Controllers.detailController import DetailController
 from Utilities.csvUtil import CsvUtil
 
 def main():
-    conf = ConfigController()
+    conf = Config()
 
     # Linuxをお使いの方は、こちらをChromium用のコードに変更してください　※動作未確認
-    chrome_service = ch.Service(executable_path = "./chromedriver")
-    driver = webdriver.Chrome(service = chrome_service)
-    driver.implicitly_wait(8)
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver.implicitly_wait(10)
 
     # 一覧ページでNFT一覧の情報を取得
-    about_ctr = AboutController(driver)
-    link_list = about_ctr.fetchAbout(conf.targetUrl)
+    about_ctr = AboutController(driver, conf)
+    link_list = about_ctr.fetchAbout()
 
     if link_list == False:
         print("NFTの基本情報を取得することができませんでした。URLが正しいかご確認ください。")
@@ -29,7 +29,7 @@ def main():
     print("取得可能なリンク数は" + str(len(link_list)) + "です")
 
     detail_ctr = DetailController(driver)
-    dts = detail_ctr.getDetails(link_list, int(conf.limit))
+    dts = detail_ctr.getDetails(conf, link_list, int(conf.limit),)
     
     # 書き出し
     arr = CsvUtil.getDetailsArray(dts)
