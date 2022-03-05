@@ -11,11 +11,11 @@ class AboutController:
     # 一覧情報を取得
     # TODO Aboutを別の用語に置き換える
     def fetchAbout(self, url):
+        print("一覧画面で基本情報を取得します")
         self.driver.get(url)
         time.sleep(1)
 
         # 縮小ボタンを選択
-        # small_btn = driver.find_element(by=By.XPATH, value='//button[contains(@class,"bnWGYU")]')
         if (small_btn := SeleniumUtil.findElements(self.driver, '//button[contains(@class,"bnWGYU")]')) != False:
             small_btn.click()
         time.sleep(0.5)

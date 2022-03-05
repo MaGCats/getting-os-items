@@ -22,7 +22,6 @@ class CsvUtil:
                 print("CSVの書き込みに失敗しました。ファイルの書き込み権限がある場所で実行してください。")
                 print(e)
 
-
     @staticmethod
     def UrlToTitle(url):
         if url == None or url == "":
