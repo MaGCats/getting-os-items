@@ -3,18 +3,16 @@
 
 # TODO 例外処理実装
 
-import about
-import csv
-from csvUtil import CsvUtil
-import detail
-import pprint
+import Models.about as about
+import Models.detail as detail
 import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome import service as ch
 
-from seleniumUtil import SeleniumUtil
+from Utilities.csvUtil import CsvUtil
+from Utilities.seleniumUtil import SeleniumUtil
 
 #
 # ＊メインメソッド＊
@@ -139,7 +137,7 @@ def fetchDetail(driver, url):
     if (content_btn := SeleniumUtil.findElements(driver,\
             '//div[@class="item--summary"]/article/div/div/div/div/img')) != False:
         driver.execute_script("arguments[0].click();", content_btn)
-        time.sleep(0.1)
+        time.sleep(0.3)
         # コンテンツの中身のURL
         detail_data.data_url = SeleniumUtil.assignElementValue(driver, \
             '//div[@class="Overlayreact__Overlay-sc-1yn7g51-0 ebMEfa"]/div/div/div/div/div/img', 'src')
