@@ -39,10 +39,21 @@ class CsvUtil:
 
     # csv書き込み
     @staticmethod
-    def writeCsv(array):
-        with open('./sample.csv', 'w', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerows(array)
+    def writeCsv(array, title="export"):
+        with open('./' + title + '.csv', 'w', newline='') as f:
+            try:
+                writer = csv.writer(f)
+                writer.writerows(array)
+            except Exception as e:
+                print("CSVの書き込みに失敗しました。ファイルの書き込み権限がある場所で実行してください。")
+                print(e)
 
-        with open('./sample.csv') as f:
-            print(f.read())
+
+    @staticmethod
+    def UrlToTitle(url):
+        if url == None or url == "":
+            return "export"
+        try:
+            return url.split('/')[-1]
+        except Exception as e:
+            return "export" 

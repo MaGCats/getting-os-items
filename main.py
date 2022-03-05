@@ -11,10 +11,9 @@ from selenium.webdriver.chrome import service as ch
 
 from Utilities.csvUtil import CsvUtil
 
-#
-# ＊メインメソッド＊
-#
 def main():
+    targetUrl = 'https://opensea.io/mag_387'
+
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
 
@@ -24,7 +23,7 @@ def main():
 
     # 一覧ページでNFT一覧の情報を取得
     about_ctr = AboutController(driver)
-    link_list = about_ctr.fetchAbout('https://opensea.io/mag_387')
+    link_list = about_ctr.fetchAbout(targetUrl)
 
     print("取得可能なリンク数は" + str(len(link_list)) + "です")
 
@@ -33,7 +32,8 @@ def main():
     
     # 書き出し
     arr = CsvUtil.getDetailsArray(dts)
-    CsvUtil.writeCsv(arr)
+    export_title = CsvUtil.UrlToTitle(targetUrl)
+    CsvUtil.writeCsv(arr, export_title)
 
 if __name__ == "__main__":
     main()
