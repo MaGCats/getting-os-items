@@ -14,7 +14,7 @@ class SeleniumUtil:
             return ""
 
         if type == "text":
-            return element.text    
+            return element.text
         elif type == "href":
             return element.get_attribute("href")
         elif type == "src":

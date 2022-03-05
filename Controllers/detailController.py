@@ -16,7 +16,6 @@ class DetailController:
             if count == limit:
                 break
             count += 1
-            print("こちらのNFTの情報を取得します:" + about.detail_url)
             detail_list.append(self.fetchDetail(about))
             print("進捗:" + str(count) + "/" + str(len(about_list)))
         return detail_list
@@ -38,6 +37,8 @@ class DetailController:
         detail_data.name = SeleniumUtil.assignElementValue(self.driver, \
             '//section[@class="item--header"]/h1', 'text')
 
+        print("こちらのNFTの情報を取得しています:" + detail_data.name)
+
         # NFT所有者ブロック 所有者が一人の場合のみ
         if (owner_itm := SeleniumUtil.findElements(self.driver, '//section[@class="item--counts"]/div/div/a')) != False:
             detail_data.owner_name = owner_itm.text
@@ -49,9 +50,9 @@ class DetailController:
             detail_data.creator_address = SeleniumUtil.assignElementValue(self.driver,\
                 '//div[contains(@id,"Body react-aria-")]/div/div/section/div/a', 'href')
 
-        # 説明
-        # TODO:改行処理の実装
         # description = driver.find_element_by_xpath('//div[contains(@class,"item--description-text")]/p').text
+        detail_data.description = SeleniumUtil.assignElementValue(self.driver,
+            '//div[contains(@class,"item--description-text")]', 'text')
 
         # Detailsを開く
         if (detail_btn := SeleniumUtil.findElements(self.driver,\
@@ -74,6 +75,6 @@ class DetailController:
                 '//div[@class="Overlayreact__Overlay-sc-1yn7g51-0 ebMEfa"]/div/div/div/div/div/img', 'src')
 
         detail_data.detail_url = url
-        detail_data.thumbnail = about.thumbnail_url
+        detail_data.thumbnail = UrlUtil.getUnSmallThumbnailUrl(about.thumbnail_url)
 
         return detail_data

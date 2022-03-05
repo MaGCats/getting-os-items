@@ -1,7 +1,22 @@
-from os import name
-
-
 class Detail:
+    @staticmethod
+    def getDetailNames():
+        return [
+            "Blockchain type",
+            "NFT name",
+            "Description",
+            "Creator name",
+            "Creator url",
+            "Owner name (One owner only)",
+            "Owner url (One owner only)",
+            "Collection name",
+            "Content url",
+            "Detail url",
+            "Thumbnail url",
+            "Contract address",
+            "Token id (Comming soon.)"
+        ]
+
     def __init__(self, 
             blockchain_type ='',
             name = '',
@@ -43,3 +58,19 @@ class Detail:
         # トークンID
         self.token_id = token_id
         
+    def getDetail(self):
+        return [
+            self.blockchain_type,
+            self.name,
+            self.description,
+            self.creator_name,
+            self.creator_address,
+            self.owner_name,
+            self.owner_url,
+            self.collection_name,
+            self.data_url,
+            self.detail_url,
+            self.thumbnail,
+            self.contract_address,
+            self.token_id
+        ]

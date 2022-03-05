@@ -1,45 +1,14 @@
 import csv
-import pprint
+
+from Models.detail import Detail
 
 class CsvUtil:
     # csv書き込み時に使用するデータ配列を作成
     @staticmethod
     def getDetailsArray(details):
-        pprint.pprint(details)
-        arr = [[
-            "Blockchain type",
-            "NFT name",
-            "Description (Comming soon.)",
-            "creator name",
-            "creator url",
-            "owner name (One owner only)",
-            "owner url (One owner only)",
-            "collection name",
-            "content url",
-            "detail url",
-            "thumbnail url",
-            "contract_address",
-            "token id (Comming soon.)"
-        ]]
-
+        arr = [Detail.getDetailNames()]
         for dt in details:
-            arr.append(
-                [
-                    dt.blockchain_type,
-                    dt.name,
-                    dt.description,
-                    dt.creator_name,
-                    dt.creator_address,
-                    dt.owner_name,
-                    dt.owner_url,
-                    dt.collection_name,
-                    dt.data_url,
-                    dt.detail_url,
-                    dt.thumbnail,
-                    dt.contract_address,
-                    dt.token_id
-                ])
-
+            arr.append(dt.getDetail())
         return arr
 
     # csv書き込み

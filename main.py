@@ -28,7 +28,7 @@ def main():
     print("取得可能なリンク数は" + str(len(link_list)) + "です")
 
     detail_ctr = DetailController(driver)
-    dts = detail_ctr.getDetails(link_list, 1)
+    dts = detail_ctr.getDetails(link_list, 5)
     
     # 書き出し
     arr = CsvUtil.getDetailsArray(dts)

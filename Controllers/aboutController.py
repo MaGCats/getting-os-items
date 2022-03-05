@@ -29,10 +29,16 @@ class AboutController:
 
         # 詳細ページのリンクを取得
         if (assets_el := SeleniumUtil.findElements(self.driver, '//div[contains(@class,"AssetsSearchView--assets")]/div/div/div/div/div/article/a', True)) != False:
+            count = 0
             about_list = []
             for s in assets_el:
+                count += 1
+                print(str(count) + "/" + str(len(assets_el)) + "の基本情報を取得中")
+
                 thumbnail = ""
-                if len(thumbnail_block := s.find_elements(by=By.XPATH, value='//div/div/div/div/img')) > 0:
+                if len(thumbnail_block := s.find_elements(by=By.XPATH, value='./div/div/div/div/img')) > 0:
+                    thumbnail = thumbnail_block[0].get_attribute("src")
+                elif len(thumbnail_block := s.find_elements(by=By.XPATH, value='./div/div/div/div/div/img')) > 0:
                     thumbnail = thumbnail_block[0].get_attribute("src")
 
                 about_itm = about.About(
