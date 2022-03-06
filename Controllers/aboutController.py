@@ -15,7 +15,7 @@ class AboutController:
         print("一覧画面で基本情報を取得します")
         url = self.conf.targetUrl
         self.driver.get(url)
-        time.sleep(self.conf.aboutWaitTime)
+        time.sleep(3)
 
         # 縮小ボタンを選択
         if (small_btn := SeleniumUtil.findElements(self.driver, '//button[contains(@class,"bnWGYU")]')) != False:
@@ -24,10 +24,12 @@ class AboutController:
         # 表示倍率を縮小
         self.driver.execute_script("document.body.style.zoom='20%'")
         time.sleep(0.5)
+        self.driver.execute_script("document.body.style.zoom='20%'")
+        time.sleep(0.5)
         # ページを一番下までスクロール
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         # 読み込み待ち
-        time.sleep(8)
+        time.sleep(self.conf.aboutWaitTime)
 
         # 詳細ページのリンクを取得
         if (assets_el := SeleniumUtil.findElements(self.driver, '//div[contains(@class,"AssetsSearchView--assets")]/div/div/div/div/div/article/a', True)) != False:

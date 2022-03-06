@@ -4,6 +4,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome import service as ch
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 
 from Controllers.aboutController import AboutController
 from Models.config import Config
@@ -15,6 +16,7 @@ def main():
 
     # Linuxをお使いの方は、こちらをChromium用のコードに変更してください　※動作未確認
     driver = webdriver.Chrome(ChromeDriverManager().install())
+    # driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
     driver.maximize_window()
     driver.implicitly_wait(10)
 

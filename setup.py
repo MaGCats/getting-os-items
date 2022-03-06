@@ -9,7 +9,9 @@ from setuptools import setup
 
 APP = ['main.py']
 DATA_FILES = ['config.ini']
-OPTIONS = {}
+OPTIONS = {
+    'iconfile': 'icon.ico'
+}
 
 setup(
     app=APP,
