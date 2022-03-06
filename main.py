@@ -15,6 +15,7 @@ def main():
 
     # Linuxをお使いの方は、こちらをChromium用のコードに変更してください　※動作未確認
     driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver.maximize_window()
     driver.implicitly_wait(10)
 
     # 一覧ページでNFT一覧の情報を取得
