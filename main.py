@@ -18,7 +18,7 @@ def main():
     driver = webdriver.Chrome(ChromeDriverManager().install())
     # driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
     driver.maximize_window()
-    driver.implicitly_wait(10)
+    driver.implicitly_wait(0.1)
 
     # 一覧ページでNFT一覧の情報を取得
     about_ctr = AboutController(driver, conf)
@@ -34,6 +34,8 @@ def main():
     detail_ctr = DetailController(driver)
     dts = detail_ctr.getDetails(conf, link_list, int(conf.limit),)
     
+    print("予定していた項目の取得が完了しました！")
+
     # 書き出し
     arr = CsvUtil.getDetailsArray(dts)
     export_title = CsvUtil.UrlToTitle(conf.targetUrl)
